@@ -1,10 +1,7 @@
-const path = require('path');
-
 const express = require('express');
 const router = express.Router();
 
 const Post = require('../models/Post');
-const rootDir = require('../helpers/path');
 
 router.get('/posts', async (req, res, next) => {
     const posts = await Post.findAll();
@@ -12,24 +9,31 @@ router.get('/posts', async (req, res, next) => {
 });
 
 router.post('/post', async (req, res, next) => {
-    const name = req.body.name;
+    const title = req.body.title;
     const description = req.body.description;
 
-    const post = await Post.create( { name: name, description: description } );
+    const post = await Post.create( { title: title, description: description } );
 
     res.status(201).send(post.toJSON());
 });
 
 router.delete('/post', async (req, res, next) => {
     const id = req.body.id;
-    
-    const post = await Post.destroy({
+
+    const post = await Post.findAll({
         where: {
             id: id
         }
     });
+    
+    await Post.destroy({
+        where: {
+            id: id
+        }
+    })
+    .catch();
 
-    res.status(201).send({ deleted: true });
+    res.status(201).send(post.map(p => p.toJSON()));
 });
 
 module.exports = router;

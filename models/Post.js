@@ -36,8 +36,8 @@ Post.init({
     tableName: 'post'
 });
 
-(async () => {
-    await sequelize.sync({ alter: true });
-  })();
+// (async () => {
+//     await sequelize.sync({ alter: true });
+//   })();
 
 module.exports = Post;
