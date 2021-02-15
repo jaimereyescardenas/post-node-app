@@ -33,7 +33,7 @@ router.delete('/post', async (req, res, next) => {
     })
     .catch();
 
-    res.status(201).send(post.map(p => p.toJSON()));
+    res.status(201).send(post[0].toJSON());
 });
 
 module.exports = router;
